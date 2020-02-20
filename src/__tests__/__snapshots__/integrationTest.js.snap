@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mutations Publish post 1`] = `
+Object {
+  "data": Object {
+    "publishPost": Object {
+      "published": false,
+      "title": "Test Post",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`mutations create post 1`] = `
+Object {
+  "data": Object {
+    "createPost": Object {
+      "_id": "5e4e8e6b3813b23298b32919",
+      "content": "This is atest post",
+      "published": false,
+      "title": "Test Post",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`mutations create user 1`] = `
+Object {
+  "data": Object {
+    "createUser": Object {
+      "_id": "5e4e61a8dc4d7e6b9026c963",
+      "mail": "s@123456678.com",
+      "name": "sandeep6",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;

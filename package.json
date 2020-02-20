@@ -1,0 +1,45 @@
+{
+  "name": "Node-graphql-apollo-inversify-poc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node index.ts",
+    "test": "jest --updateSnapshot"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/preset-env": "^7.8.4",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/jest": "^25.1.2",
+    "@types/mongodb": "^3.3.16",
+    "babel-jest": "^25.1.0",
+    "eslint": "^6.8.0",
+    "jest": "^25.1.0",
+    "nodemon": "^2.0.2",
+    "ts-jest": "^25.2.0",
+    "ts-node": "^8.6.2"
+  },
+  "dependencies": {
+    "@types/jsonwebtoken": "^8.3.7",
+    "@types/mongoose": "^5.7.1",
+    "apollo-link": "^1.2.13",
+    "apollo-link-http": "^1.5.16",
+    "apollo-server": "^2.10.1",
+    "apollo-server-express": "^2.10.1",
+    "apollo-server-testing": "^2.10.1",
+    "bcryptjs": "^2.4.3",
+    "express": "^4.17.1",
+    "graphql": "^14.6.0",
+    "graphql-tag": "^2.10.3",
+    "inversify": "^5.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.5.3",
+    "mongoose": "^5.9.1",
+    "nock": "^12.0.0",
+    "reflect-metadata": "^0.1.13",
+    "typescript": "^3.7.5"
+  }
+}
