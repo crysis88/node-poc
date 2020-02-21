@@ -4,8 +4,45 @@ exports[`mutations Publish post 1`] = `
 Object {
   "data": Object {
     "publishPost": Object {
-      "published": false,
+      "published": true,
       "title": "Test Post",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`mutations User signup 1`] = `
+Object {
+  "data": Object {
+    "signUp": Object {
+      "_id": "5e4e61a8dc4d7e6b9026c963",
+      "mail": "s@123456678.com",
+      "name": "sandeep6",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`mutations create comment 1`] = `
+Object {
+  "data": Object {
+    "createComment": Object {
+      "_id": "5e4fa29275ce7e528086856a",
+      "message": "Test Message",
     },
   },
   "errors": undefined,
@@ -26,25 +63,6 @@ Object {
       "content": "This is atest post",
       "published": false,
       "title": "Test Post",
-    },
-  },
-  "errors": undefined,
-  "extensions": undefined,
-  "http": Object {
-    "headers": Headers {
-      Symbol(map): Object {},
-    },
-  },
-}
-`;
-
-exports[`mutations create user 1`] = `
-Object {
-  "data": Object {
-    "createUser": Object {
-      "_id": "5e4e61a8dc4d7e6b9026c963",
-      "mail": "s@123456678.com",
-      "name": "sandeep6",
     },
   },
   "errors": undefined,

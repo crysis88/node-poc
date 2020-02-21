@@ -28,9 +28,9 @@ const server = new ApolloServer({
 });
 const app = express();
 server.applyMiddleware({ app });
-app.listen({ port: 4000 }, () => {
+app.listen({ port : process.env.SERVER_PORT}, () => {
     //Conet to Monogo db
-    connect('mongodb://127.0.0.1:27017/shop')
+    connect(process.env.DB_URL)
         .then(() => console.log('Connected to MongoDb'))
     set('debug', true);
     console.log(`:rocket: Server ready at http://localhost:4000${server.graphqlPath}`)

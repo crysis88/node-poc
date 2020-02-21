@@ -36,7 +36,7 @@ export const Mutation = {
         }
         return {
             user,
-            token: sign({ userId: user.id }, "secret", { expiresIn: "5m" })
+            token: sign({ userId: user.id }, process.env.TOKEN_SECRET, { expiresIn: "5m" })
         }
     }
 }

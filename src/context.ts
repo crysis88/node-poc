@@ -41,7 +41,7 @@ export class ContextProvider implements IContextProvider {
             throw new Error('Authentication required')
         }
         //check if async one makes more sense here
-        const decoded: Object = verify(this.authToken as string, 'secret');
+        const decoded: Object = verify(this.authToken as string, process.env.TOKEN_SECRET);
         const user: IUser = await this.userRepository.findUserById(decoded['userId']);
         if (!user) {
             throw new Error("No matching user found !!!");
