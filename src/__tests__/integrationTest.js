@@ -1,7 +1,6 @@
 import "reflect-metadata";
 import { createTestClient } from 'apollo-server-testing';
 import gql from 'graphql-tag';
-import nock from 'nock';
 import resolvers from '../resolvers';
 import typeDefs from '../type-defs';
 import { ApolloServer } from 'apollo-server';
@@ -30,7 +29,7 @@ const constructTestServer = (mockAuth) => {
 // the mocked REST API data
 
 
-const mockedCreateUserResponse =
+const mockedSignupResponse =
 {
   _id: "5e4e61a8dc4d7e6b9026c963",
   name: "sandeep6",
@@ -48,14 +47,20 @@ const mockedCreatePostResponse =
 const mockedPublishPostResponse =
 {
   title: "Test Post",
-  published: false
+  published: true
+}
+
+const mockedCreateCommentResponse =
+{
+  _id: "5e4fa29275ce7e528086856a",
+  message: "Test Message"
 }
 
 
 
-const CREATE_USER = gql`
-  mutation createUser($userInput: NewUserInput!) {
-  createUser(userInput: $userInput) {
+const SIGNUP = gql`
+  mutation signUp($userInput: NewUserInput!) {
+    signUp(userInput: $userInput) {
     _id
       name
       mail
@@ -83,13 +88,23 @@ const PUBLISH_POST = gql`
 }
 `;
 
+const CREATE_COMMENT = gql`
+  mutation createComment($message: String!, $postId: String!) {
+    createComment(message: $message, postId: $postId) {
+    _id
+    message
+  }
+}
+`;
+
 describe('mutations', () => {
-  it('create user', async () => {
+  it('User signup', async () => {
     const { server, container } = constructTestServer();
     const userRepo = container.get(TYPES.UserRepository);
-    userRepo.createUser = jest.fn(() => mockedCreateUserResponse);
+    userRepo.createUser = jest.fn(() => mockedSignupResponse);
     const { mutate } = createTestClient(server);
-    const res = await mutate({ mutation: CREATE_USER, variables: { userInput: { name: "sandeep7", mail: "s@1234566789.com", password: "sandep" } } });
+    const res = await mutate({ mutation: SIGNUP, variables: { userInput: { name: "sandeep7", mail: "s@1234566789.com", password: "sandep" } } });
+    expect(res.data.signUp._id).toBe("5e4e61a8dc4d7e6b9026c963");
     expect(res).toMatchSnapshot();
   });
 
@@ -99,6 +114,7 @@ describe('mutations', () => {
     postRepo.createPost = jest.fn(() => mockedCreatePostResponse);
     const { mutate } = createTestClient(server);
     const res = await mutate({ mutation: CREATE_POST, variables: { postInput: { title: "Test Post", content: "This is atest post", published: false } } });
+    expect(res.data.createPost.title).toBe("Test Post");
     expect(res).toMatchSnapshot();
   });
 
@@ -108,7 +124,19 @@ describe('mutations', () => {
     postRepo.publishPost = jest.fn(() => mockedPublishPostResponse);
     const { mutate } = createTestClient(server);
     const res = await mutate({ mutation: PUBLISH_POST, variables: { postId: "5e4e8e6b3813b23298b32919" } });
+    expect(res.data.publishPost.published).toBe(true);
     expect(res).toMatchSnapshot();
   });
+
+  it('create comment', async () => {
+    const { server, container } = constructTestServer(true);
+    const commentRepo = container.get(TYPES.CommentRepository);
+    commentRepo.addComment = jest.fn(() => mockedCreateCommentResponse);
+    const { mutate } = createTestClient(server);
+    const res = await mutate({ mutation: CREATE_COMMENT, variables: { message: "Test Message",postId: "5e4e8e6b3813b23298b32919"  } });
+    expect(res.data.createComment.message).toBe("Test Message");
+    expect(res).toMatchSnapshot();
+  });
+  
 
 });

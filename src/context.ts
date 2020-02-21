@@ -7,28 +7,31 @@ import { ICommentRepository } from "./repositories/commentRepository";
 import { IComment } from "./models/comment.model";
 import { IPost } from "./models/post.model";
 import { IPostRepository } from "./repositories/postRepository";
-import * as jwt from 'jsonwebtoken';
+import {verify} from 'jsonwebtoken';
 
 export interface IContextProvider {
     userRepository: IUserRepository<IUser>;
     postRepository: IPostRepository<IPost>;
     commentRepository: ICommentRepository<IComment>;
     authToken: String;
-    currentUser: IUser;
     setAuthToken(token: String): void;
     getCurrentUser(): Promise<IUser>;
 }
 
 @injectable()
 export class ContextProvider implements IContextProvider {
-    authToken: String;
-    currentUser: IUser;
+    
     @inject(TYPES.PostRepository)
     postRepository: IPostRepository<IPost>;
+
     @inject(TYPES.CommentRepository)
     commentRepository: ICommentRepository<IComment>;
+
     @inject(TYPES.UserRepository)
     userRepository: IUserRepository<IUser>;
+
+    authToken: String;
+
     setAuthToken(token: String): void {
         this.authToken = token;
     }
@@ -37,7 +40,8 @@ export class ContextProvider implements IContextProvider {
         if (!this.authToken) {
             throw new Error('Authentication required')
         }
-        const decoded: Object = jwt.verify(this.authToken as string, 'secret');
+        //check if async one makes more sense here
+        const decoded: Object = verify(this.authToken as string, 'secret');
         const user: IUser = await this.userRepository.findUserById(decoded['userId']);
         if (!user) {
             throw new Error("No matching user found !!!");

@@ -18,7 +18,6 @@ export default class UserRepository implements IUserRepository<IUser>{
         return userModel.findOne({ mail }).exec();
     }
     createUser(name: String, mail: String, password: String): Promise<IUser> {
-        console.log(name);
         return userModel.create({ name, mail, password: password });
     }
 

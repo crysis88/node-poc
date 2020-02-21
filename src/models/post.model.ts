@@ -1,21 +1,25 @@
-import * as mongoose from 'mongoose';
+import {Schema, Document, model} from 'mongoose';
 import { IUser } from './user.model';
-import { IComment } from './comment.model';
+import commentModel from './comment.model';
 
-export interface IPost extends mongoose.Document {
+export interface IPost extends Document {
     title: String,
     content: String,
     published: Boolean,
     author: IUser
 }
 
-const PostSchema: mongoose.Schema = new mongoose.Schema({
+const PostSchema: Schema = new Schema({
     title: { type: String, required: true },
     content: { type: String, required: true },
     createdAt: { type: Date },
     published: { type: Boolean },
-    author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    author: { type: Schema.Types.ObjectId, ref: 'User' }
 
-});
+}).pre<IPost>('remove',  function (next) {
+    console.log("tryin to remove comments");
+     commentModel.deleteMany({post: this.id}).exec();
+    next();
+})
 
-export default mongoose.model<IPost>('Post', PostSchema);
+export default model<IPost>('Post', PostSchema);

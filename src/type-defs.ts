@@ -6,7 +6,7 @@ type User{
     _id: String!,
     name: String!,
     mail: String!,
-    password: String!
+    password: String!,
 }
 
 type AuthPayload{
@@ -30,18 +30,20 @@ type Comment {
 }
 
 type Query{
-    getPostById(id: String!): Post,
-    getPostByAuthor(author: String!): Post,
-    comments(post: String!): Comment
+    postById(id: String!): Post,
+    postByAuthor(author: String!): [Post],
+    comments(post: String!): [Comment]
 
 }
 
 type Mutation{
-createUser(userInput: NewUserInput!): User,
-createPost(postInput: NewPostInput!): Post,
-publishPost(postId: String!): Post,
-createComment(message: String!, postId: String!): Comment
-login(mail: String!, password: String!): AuthPayload
+    signUp(userInput: NewUserInput!): User,
+    createPost(postInput: NewPostInput!): Post,
+    publishPost(postId: String!): Post,
+    deletePost(postId:String!): Post,
+    createComment(message: String!, postId: String!): Comment,
+    deleteComment(commentId:String!): Comment,
+    login(mail: String!, password: String!): AuthPayload
 }
 
 input NewUserInput{
