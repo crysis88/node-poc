@@ -1,19 +1,15 @@
 import { ContextProvider } from "../context";
-import { IPost } from "../models/post.model";
-import { IComment } from "../models/comment.model";
 
 export const Query = {
-    postById: async (parent: any, args: any, context: ContextProvider) => {
-        const post: IPost = await context.postRepository.findPostByID(args.id);
-        return post;
-    },
+    postById: async (parent: any, args: any, context: ContextProvider) =>
+        await context.postRepository.findPostByID(args.id)
+    ,
     postByAuthor: async (parent: any, args: any, context: ContextProvider) => {
-        const post: IPost[] = await context.postRepository.findPostByAuthor(args.author);
-        return post;
+        const author: String = args.author ? args.author : (await context.getCurrentUser()).id;
+        return await context.postRepository.findPostByAuthor(author);
     },
-    comments: async (parent: any, args: any, context: ContextProvider) => {
-        const comments: IComment[] = await context.commentRepository.fetchComments(args.post);
-        return comments;
-    }
+
+    comments: async (parent: any, args: any, context: ContextProvider) =>
+        await context.commentRepository.fetchComments(args.post)
 
 }

@@ -105,7 +105,6 @@ describe('mutations', () => {
     const { mutate } = createTestClient(server);
     const res = await mutate({ mutation: SIGNUP, variables: { userInput: { name: "sandeep7", mail: "s@1234566789.com", password: "sandep" } } });
     expect(res.data.signUp._id).toBe("5e4e61a8dc4d7e6b9026c963");
-    expect(res).toMatchSnapshot();
   });
 
   it('create post', async () => {
@@ -115,7 +114,6 @@ describe('mutations', () => {
     const { mutate } = createTestClient(server);
     const res = await mutate({ mutation: CREATE_POST, variables: { postInput: { title: "Test Post", content: "This is atest post", published: false } } });
     expect(res.data.createPost.title).toBe("Test Post");
-    expect(res).toMatchSnapshot();
   });
 
   it('Publish post', async () => {
@@ -125,7 +123,6 @@ describe('mutations', () => {
     const { mutate } = createTestClient(server);
     const res = await mutate({ mutation: PUBLISH_POST, variables: { postId: "5e4e8e6b3813b23298b32919" } });
     expect(res.data.publishPost.published).toBe(true);
-    expect(res).toMatchSnapshot();
   });
 
   it('create comment', async () => {
@@ -135,7 +132,6 @@ describe('mutations', () => {
     const { mutate } = createTestClient(server);
     const res = await mutate({ mutation: CREATE_COMMENT, variables: { message: "Test Message",postId: "5e4e8e6b3813b23298b32919"  } });
     expect(res.data.createComment.message).toBe("Test Message");
-    expect(res).toMatchSnapshot();
   });
   
 

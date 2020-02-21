@@ -30,7 +30,7 @@ const app = express();
 server.applyMiddleware({ app });
 app.listen({ port : process.env.SERVER_PORT}, () => {
     //Conet to Monogo db
-    connect(process.env.DB_URL)
+    connect(process.env.DB_URL,{ useNewUrlParser: true })
         .then(() => console.log('Connected to MongoDb'))
     set('debug', true);
     console.log(`:rocket: Server ready at http://localhost:4000${server.graphqlPath}`)

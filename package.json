@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node -r dotenv/config index.ts",
-    "test": "jest --updateSnapshot"
+    "test": "jest --coverage"
   },
   "keywords": [],
   "author": "",

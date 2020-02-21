@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { injectable } from "inversify";
 import postModel, { IPost } from "../models/post.model";
 
-export interface IPostRepository<IComment> {
+export interface IPostRepository<IPost> {
     createPost(title: String, content: String, author: String, published: Boolean): Promise<IPost>;
     findPostByAuthor(author: String): Promise<IPost[]>;
     findPostByID(id: String): Promise<IPost>;
@@ -13,7 +13,7 @@ export interface IPostRepository<IComment> {
 @injectable()
 export default class PostRepository implements IPostRepository<IPost>{
     findPostByAuthor(author: String): Promise<IPost[]> {
-        return postModel.find({ author }).populate('comments').exec();
+        return postModel.find({ author }).populate('author').exec();
     }
     findPostByID(id: String): Promise<IPost> {
         return postModel.findById(id).populate('author').exec();

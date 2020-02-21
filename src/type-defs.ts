@@ -26,12 +26,12 @@ type Comment {
     _id: String,
     message: String!,
     author: User!,
-    post: [Post]
+    post: Post
 }
 
 type Query{
     postById(id: String!): Post,
-    postByAuthor(author: String!): [Post],
+    postByAuthor(author: String): [Post],
     comments(post: String!): [Comment]
 
 }

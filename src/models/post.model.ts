@@ -17,7 +17,6 @@ const PostSchema: Schema = new Schema({
     author: { type: Schema.Types.ObjectId, ref: 'User' }
 
 }).pre<IPost>('remove',  function (next) {
-    console.log("tryin to remove comments");
      commentModel.deleteMany({post: this.id}).exec();
     next();
 })

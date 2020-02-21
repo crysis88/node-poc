@@ -11,7 +11,7 @@ export interface ICommentRepository<IComment> {
 @injectable()
 export default class CommentRepository implements ICommentRepository<IComment>{
     fetchComments(post: String): Promise<IComment[]> {
-        return commentModel.find({ post }).exec();
+        return commentModel.find({ post }).populate('author').populate('post').exec();
     }
     addComment(message: String, post: String, author: String): Promise<IComment> {
         return commentModel.create({ message, post, author });
