@@ -8,6 +8,7 @@ import { connect, set } from 'mongoose';
 import { TYPES } from './src/Types';
 import { DIModule } from './inversify.config';
 import { IContextProvider } from "./src/context";
+import { errorDetails } from "./src/ErrorList";
 
 //Initialize DI container
 const container = new Container();
@@ -23,7 +24,11 @@ const server = new ApolloServer({
             contextP.setAuthToken(authToken);
         }
         return contextP;
-    }, typeDefs, resolvers
+    }, typeDefs, resolvers, formatError: (err) => {
+        const message: string = errorDetails[err.message] ? errorDetails[err.message].message : err.message;
+        const statusCode: string = errorDetails[err.message]? errorDetails[err.message].statusCode: 400;
+        return ({ message, statusCode });
+    }
 });
 const app = express();
 server.applyMiddleware({ app });

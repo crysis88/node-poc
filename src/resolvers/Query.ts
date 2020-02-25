@@ -1,10 +1,11 @@
 import { ContextProvider } from "../context";
 import { isValidObjectId } from 'mongoose';
+import {errorName}  from "../ErrorList";
 
 export const Query = {
     postById: async (parent: any, args: any, context: ContextProvider) => {
         if (!isValidObjectId(args.postId)) {
-            throw new Error('Post Id is invalid');
+            throw new Error(errorName.INVALID_POST_ID);
         }
         return context.postRepository.findPostById(args.id)
     },
@@ -16,7 +17,7 @@ export const Query = {
 
     comments: async (parent: any, args: any, context: ContextProvider) => {
         if (!isValidObjectId(args.postId)) {
-            throw new Error('Post Id is invalid');
+            throw new Error(errorName.INVALID_POST_ID);
         }
         return context.commentRepository.fetchComments(args.post);
     }

@@ -5,6 +5,7 @@ import { IUser } from "../models/user.model";
 import { IComment } from "../models/comment.model";
 import { IPost } from "../models/post.model";
 import { isValidObjectId } from 'mongoose';
+import {errorName}  from "../ErrorList";
 
 
 export const Mutation = {
@@ -18,45 +19,45 @@ export const Mutation = {
     publishPost: async (parent: any, args: any, context: ContextProvider) => {
         const currentUser: IUser = await context.getCurrentUser();
         if (!isValidObjectId(args.postId)) {
-            throw new Error('Post id is invalid');
+            throw new Error(errorName.INVALID_POST_ID);
         }
         let post: IPost;
         try {
             post = await context.postRepository.findPostById(args.postId);
         } catch (error) {
-            throw new Error(`No Post found with id ${args.postId}`);
+            throw new Error(errorName.POST_NOT_FOUND);
         }
         if (post) {
             if (post.author._id.toString() == currentUser._id.toString()) {
                 return context.postRepository.publishPost(args.postId);
             }
             else {
-                throw new Error('Only author can publish a post');
+                throw new Error(errorName.POST_DELETE_NOT_ALLOWED);
             }
         } else {
-            throw new Error(`No Post found with id ${args.postId}`);
+            throw new Error(errorName.POST_NOT_FOUND);
         }
     },
     deletePost: async (parent: any, args: any, context: ContextProvider) => {
         const currentUser: IUser = await context.getCurrentUser();
         if (!isValidObjectId(args.postId)) {
-            throw new Error('Post id is invalid');
+            throw new Error(errorName.INVALID_POST_ID);
         }
         let post: IPost;
         try {
             post = await context.postRepository.findPostById(args.postId);
         } catch (error) {
-            throw new Error(`No Post found with id ${args.postId}`);
+            throw new Error(errorName.POST_NOT_FOUND);
         }
         if (post) {
             if (post.author._id.toString() == currentUser._id.toString()) {
                 return context.postRepository.deletePost(args.postId);
             }
             else {
-                throw new Error('Only author can delete a post');
+                throw new Error(errorName.POST_DELETE_NOT_ALLOWED);
             }
         } else {
-            throw new Error(`No Post found with id ${args.postId}`);
+            throw new Error(errorName.POST_NOT_FOUND);
         }
     },
     createComment: async (parent: any, args: any, context: ContextProvider) => {
@@ -66,33 +67,33 @@ export const Mutation = {
     deleteComment: async (parent: any, args: any, context: ContextProvider) => {
         const user: IUser = await context.getCurrentUser();
         if (!isValidObjectId(args.commentId)) {
-            throw new Error('Comment id is invalid');
+            throw new Error(errorName.INVALID_COMMENT_ID);
         }
         let comment: IComment;
         try {
             comment = await context.commentRepository.findCommentById(args.commentId);
         } catch (error) {
-            throw new Error(`No comment found with given id ${args.commentId}`);
+            throw new Error(errorName.COMMENT_NOT_FOUND);
         }
         if (comment) {
             if (user._id.toString() == comment.author._id.toString()) {
                 return context.commentRepository.deleteComment(args.commentId);
 
             } else {
-                throw new Error('Comments can only be deleted by author');
+                throw new Error(errorName.COMMENT_DELETE_NOT_ALLOWED);
             }
         } else {
-            throw new Error(`No comment found with given id ${args.commentId}`);
+            throw new Error(errorName.COMMENT_NOT_FOUND);
         }
 
     },
     login: async (parent: any, args: any, context: ContextProvider) => {
         const user: IUser = await context.userRepository.findUserByEmail(args.mail);
         if (user == null) {
-            throw new Error('User not found');
+            throw new Error(errorName.INVALID_USER);
         }
         if (!(await compare(args.password, user.password as string))) {
-            throw new Error("Passwords don't match");
+            throw new Error(errorName.INVALID_PASSWORD);
         }
         return {
             user,

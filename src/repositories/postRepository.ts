@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { injectable } from "inversify";
 import postModel, { IPost } from "../models/post.model";
+import {errorName}  from "../ErrorList";
 
 export interface IPostRepository<IPost> {
     createPost(title: String, content: String, author: String, published: Boolean): Promise<IPost>;
@@ -28,7 +29,7 @@ export default class PostRepository implements IPostRepository<IPost>{
         return postModel.findById(postId, (err, post) => {
             return post.remove((err) => {
                 if (err) {
-                    throw new Error(`Error while deleting post with id: ${post.id}`);
+                    throw new Error(errorName.POST_DELETE_ERROR);
                 }
             });
         }).exec();

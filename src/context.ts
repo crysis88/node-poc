@@ -8,6 +8,7 @@ import { IComment } from "./models/comment.model";
 import { IPost } from "./models/post.model";
 import { IPostRepository } from "./repositories/postRepository";
 import {verify} from 'jsonwebtoken';
+import {errorName}  from "./ErrorList";
 
 export interface IContextProvider {
     userRepository: IUserRepository<IUser>;
@@ -38,13 +39,13 @@ export class ContextProvider implements IContextProvider {
 
     async getCurrentUser(): Promise<IUser> {
         if (!this.authToken) {
-            throw new Error('Authentication required')
+            throw new Error(errorName.UNAUTHORIZED);
         }
         //check if async one makes more sense here
         const decoded: Object = verify(this.authToken as string, process.env.TOKEN_SECRET);
         const user: IUser = await this.userRepository.findUserById(decoded['userId']);
         if (!user) {
-            throw new Error("No matching user found !!!");
+            throw new Error(errorName.USER_NOT_FOUND);
         }
         return user;
     }
